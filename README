@@ -1,0 +1,74 @@
+Lightweight hash-table implementation written in C
+
+SYNOPSIS:
+    I really wanted to write my own hash table implementation for 
+    a tool that I am writing, so I did. 
+
+    Ive based the api primarily on the opensource ght_hash code,
+    however I opted to go open address vs chained. Another difference
+    is that I decided to keep it really simple and basic, whereas
+    ght_hash is more flexible.
+
+DESIGN:
+    Open-address hash table which uses quadratic probing for collision
+    resolution.
+
+    hash_remove does not free buckets, instead it marks the buckets as
+    empty so that they can be reused.
+
+    Currently only uses fnv1a digests for hashing, however it works
+    fairly well for my uses.(1)
+
+FILES:
+    hashtable.c:
+    hashtable.h:
+        Contains the hash table management code.
+
+    digest.c:
+    digest.h:
+        Contains hashing functions for use by hashtable.
+
+FUNCTIONS:
+    hash_create:
+        Create a new hash table object.
+
+    hash_destroy:
+        Free all memory allocated by the hash table.  (does not free
+        user allocated data blocks).
+
+    hash_insert:
+        Insert a key/value pair into the table.
+
+    hash_get:
+        Return the value for the given key in the hash table.
+
+    hash_remove:
+        Mark an element as removed from the table and return a pointer
+        to the data in the table.
+
+    hash_first:
+        Return the first element in the hash table.
+
+    hash_next:
+        Return next element in a table.
+
+    hash_dump:
+        Print out which index is filled.
+
+    fnv1a_digest:
+        Fnv1a hash implementation. 
+
+TODO:
+    * Add hash_rehash function to automagically resize the table.
+    * Write libcheck test suite for the hash-table. 
+    * Compare performance against ght_hash.
+    * Compare performance against khash.
+    * Compare performance against oml_hash.
+
+NOTES:
+    1. fnv1 digest works best where table size is a power of 2. 
+
+LICENSE:
+    Use it for whatever you want. No warranty expressed or implied..
+
+
